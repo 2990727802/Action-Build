@@ -124,7 +124,7 @@ jobs:
             {
               "FILE": "${{ matrix.file }}",
               "SUSFS_CI": "NoN",
-              "KSU_META": "susfs-main/王德发刷机/",
+              "KSU_META": "susfs-main/抖音王德发刷机/",
               "BUILD_TIME": "F",
               "SUFFIX": "",
               "FAST_BUILD": "true",
@@ -286,10 +286,10 @@ jobs:
       - name: Create Final ZIP from Extracted ZIPS
         run: |
           cd all_artifacts
-          zip -r ../All-AnyKernel3-ReSukiSU-${{ github.event.inputs.BATCH }}.zip ./*
+          zip -r ../All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}.zip ./*
 
       - name: Upload Combined ZIP Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: All-AnyKernel3-ReSukiSU-${{ github.event.inputs.BATCH }}
-          path: All-AnyKernel3-ReSukiSU-${{ github.event.inputs.BATCH }}.zip
+          name: All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}
+          path: All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}.zip
