@@ -5,218 +5,218 @@ on:
     inputs:
       FILE:
         type: choice
-        description: "配置文件｜排列: OnePlus(1-112) → OPPO(113-187) → realme(188-206)｜后缀=安卓版本 _s=12 _t=13 _u=14 _v=15 _b=16 _c=17｜同机型各版本相邻，务必选与手机当前安卓版本一致的，选错会无声/相机失效"
+        description: "配置文件｜名字末尾 _A13/_A14/_A15/_A16 就是安卓版本，务必选和手机当前安卓版本一致的，选错会没声音/相机坏｜没带 _A 的表示该机型只有一个版本｜排列: OnePlus → OPPO → realme，同机型各安卓版本相邻"
         required: true
-        default: oneplus_ace2_pro_b
+        default: oneplus_ace2_pro_A16
         options:
-          - oneplus_10_pro_s
-          - oneplus_10_pro_u
-          - oneplus_10_pro_v
-          - oneplus_10_pro_b
-          - oneplus_10r_s
-          - oneplus_10r_t
-          - oneplus_10r_u
-          - oneplus_10r_v
-          - oneplus_10t_v
-          - oneplus_11_t
-          - oneplus_11_u
-          - oneplus_11_v
-          - oneplus_11_b
-          - oneplus_11r_u
-          - oneplus_11r_v
-          - oneplus_11r_b
-          - oneplus_12_u
-          - oneplus_12_v
-          - oneplus_12_b
-          - oneplus_12r_v
-          - oneplus_12r_b
+          - oneplus_10_pro_A12
+          - oneplus_10_pro_A14
+          - oneplus_10_pro_A15
+          - oneplus_10_pro_A16
+          - oneplus_10r_A12
+          - oneplus_10r_A13
+          - oneplus_10r_A14
+          - oneplus_10r_A15
+          - oneplus_10t_A15
+          - oneplus_11_A13
+          - oneplus_11_A14
+          - oneplus_11_A15
+          - oneplus_11_A16
+          - oneplus_11r_A14
+          - oneplus_11r_A15
+          - oneplus_11r_A16
+          - oneplus_12_A14
+          - oneplus_12_A15
+          - oneplus_12_A16
+          - oneplus_12r_A15
+          - oneplus_12r_A16
           - oneplus_13
-          - oneplus_13_b
+          - oneplus_13_A16
           - oneplus_13_global
           - oneplus_13r
-          - oneplus_13r_b
+          - oneplus_13r_A16
           - oneplus_13s
-          - oneplus_13s_b
+          - oneplus_13s_A16
           - oneplus_13t
-          - oneplus_13t_b
+          - oneplus_13t_A16
           - oneplus_15
           - oneplus_15_Canary
           - oneplus_15r
           - oneplus_15r_Canary
           - oneplus_15t
           - oneplus_15t_Canary
-          - oneplus_ace_t
-          - oneplus_ace_u
-          - oneplus_ace_v
-          - oneplus_ace_2v_v
-          - oneplus_ace_2v_b
-          - oneplus_ace_3v_v
-          - oneplus_ace_3v_b
+          - oneplus_ace_A13
+          - oneplus_ace_A14
+          - oneplus_ace_A15
+          - oneplus_ace_2v_A15
+          - oneplus_ace_2v_A16
+          - oneplus_ace_3v_A15
+          - oneplus_ace_3v_A16
           - oneplus_ace_6
           - oneplus_ace_6t
           - oneplus_ace_6t_Canary
-          - oneplus_ace_pro_v
-          - oneplus_ace_race_u
-          - oneplus_ace_race_v
-          - oneplus_ace2_v
-          - oneplus_ace2_b
-          - oneplus_ace2_pro_v
-          - oneplus_ace2_pro_b
-          - oneplus_ace3_v
-          - oneplus_ace3_b
+          - oneplus_ace_pro_A15
+          - oneplus_ace_race_A14
+          - oneplus_ace_race_A15
+          - oneplus_ace2_A15
+          - oneplus_ace2_A16
+          - oneplus_ace2_pro_A15
+          - oneplus_ace2_pro_A16
+          - oneplus_ace3_A15
+          - oneplus_ace3_A16
           - oneplus_ace3_pro
-          - oneplus_ace3_pro_v
-          - oneplus_ace3_pro_b
+          - oneplus_ace3_pro_A15
+          - oneplus_ace3_pro_A16
           - oneplus_ace5
-          - oneplus_ace5_b
+          - oneplus_ace5_A16
           - oneplus_ace5_pro
-          - oneplus_ace5_pro_b
+          - oneplus_ace5_pro_A16
           - oneplus_ace5_race
-          - oneplus_ace5_race_b
+          - oneplus_ace5_race_A16
           - oneplus_ace5_ultra
-          - oneplus_ace5_ultra_b
-          - oneplus_ace5_ultra_bak_b
+          - oneplus_ace5_ultra_A16
+          - oneplus_ace5_ultra_bak_A16
           - oneplus_ace6_ultra
           - oneplus_ace6_ultra_Canary
-          - oneplus_n6_b
-          - oneplus_nord_3_v
-          - oneplus_nord_3_b
-          - oneplus_nord_4_v
-          - oneplus_nord_4_b
+          - oneplus_n6_A16
+          - oneplus_nord_3_A15
+          - oneplus_nord_3_A16
+          - oneplus_nord_4_A15
+          - oneplus_nord_4_A16
           - oneplus_nord_5
-          - oneplus_nord_5_b
+          - oneplus_nord_5_A16
           - oneplus_nord_6
-          - oneplus_nord_ce4_v
-          - oneplus_nord_ce4_b
-          - oneplus_nord_ce4_lite_5g_v
-          - oneplus_nord_ce4_lite_5g_b
-          - oneplus_nord_ce5_v
-          - oneplus_nord_ce5_b
-          - oneplus_nord_ce6_lite_b
-          - oneplus_nord_n30_se_5g_v
-          - oneplus_open_v
-          - oneplus_open_b
+          - oneplus_nord_ce4_A15
+          - oneplus_nord_ce4_A16
+          - oneplus_nord_ce4_lite_5g_A15
+          - oneplus_nord_ce4_lite_5g_A16
+          - oneplus_nord_ce5_A15
+          - oneplus_nord_ce5_A16
+          - oneplus_nord_ce6_lite_A16
+          - oneplus_nord_n30_se_5g_A15
+          - oneplus_open_A15
+          - oneplus_open_A16
           - oneplus_pad_2_pro
-          - oneplus_pad_2_pro_b
+          - oneplus_pad_2_pro_A16
           - oneplus_pad_3
-          - oneplus_pad_3_b
+          - oneplus_pad_3_A16
           - oneplus_pad_3_pro
           - oneplus_pad_3_pro_Canary
           - oneplus_pad_4
           - oneplus_pad_4_Canary
-          - oneplus_pad_go_2_b
-          - oneplus_pad_lite_v
-          - oneplus_pad_lite_b
-          - oneplus_pad_lite_Canary_b
-          - oneplus_pad_mt6897_v
-          - oneplus_pad_mt6897_b
-          - oneplus_pad_mt6983_v
-          - oneplus_pad_mt6983_b
+          - oneplus_pad_go_2_A16
+          - oneplus_pad_lite_A15
+          - oneplus_pad_lite_A16
+          - oneplus_pad_lite_Canary_A16
+          - oneplus_pad_mt6897_A15
+          - oneplus_pad_mt6897_A16
+          - oneplus_pad_mt6983_A15
+          - oneplus_pad_mt6983_A16
           - oneplus_pad_pro
-          - oneplus_pad_pro_v
-          - oneplus_pad_pro_b
-          - oneplus_pad2_v
-          - oneplus_pad2_b
-          - oneplus_pad2_mt6991_b
+          - oneplus_pad_pro_A15
+          - oneplus_pad_pro_A16
+          - oneplus_pad2_A15
+          - oneplus_pad2_A16
+          - oneplus_pad2_mt6991_A16
           - oneplus_turbo_6
           - oneplus_turbo_6v
-          - oneplus_turbo_6x_b
-          - oppo_a5_pro_5g_v
-          - oppo_f29_pro_5g_v
-          - oppo_find_n2_v
-          - oppo_find_n2_b
-          - oppo_find_n2_flip_b
-          - oppo_find_n3_v
-          - oppo_find_n3_b
+          - oneplus_turbo_6x_A16
+          - oppo_a5_pro_5g_A15
+          - oppo_f29_pro_5g_A15
+          - oppo_find_n2_A15
+          - oppo_find_n2_A16
+          - oppo_find_n2_flip_A16
+          - oppo_find_n3_A15
+          - oppo_find_n3_A16
           - oppo_find_n3_flip
-          - oppo_find_n3_flip_u
-          - oppo_find_n3_flip_v
-          - oppo_find_n3_flip_b
+          - oppo_find_n3_flip_A14
+          - oppo_find_n3_flip_A15
+          - oppo_find_n3_flip_A16
           - oppo_find_n5
-          - oppo_find_n5_b
-          - oppo_find_x5_pro_b
-          - oppo_find_x5_pro_mt6983_v
+          - oppo_find_n5_A16
+          - oppo_find_x5_pro_A16
+          - oppo_find_x5_pro_mt6983_A15
           - oppo_find_x6
-          - oppo_find_x6_u
-          - oppo_find_x6_v
-          - oppo_find_x6_pro_v
-          - oppo_find_x6_pro_b
-          - oppo_find_x7_v
-          - oppo_find_x7_b
-          - oppo_find_x7_ultra_v
-          - oppo_find_x7_ultra_b
+          - oppo_find_x6_A14
+          - oppo_find_x6_A15
+          - oppo_find_x6_pro_A15
+          - oppo_find_x6_pro_A16
+          - oppo_find_x7_A15
+          - oppo_find_x7_A16
+          - oppo_find_x7_ultra_A15
+          - oppo_find_x7_ultra_A16
           - oppo_find_x8
-          - oppo_find_x8_b
+          - oppo_find_x8_A16
           - oppo_find_x8_pro
           - oppo_find_x8_ultra
-          - oppo_find_x8_ultra_b
+          - oppo_find_x8_ultra_A16
           - oppo_find_x8s
-          - oppo_find_x8s_b
+          - oppo_find_x8s_A16
           - oppo_find_x8s_plus
-          - oppo_find_x8s_plus_b
+          - oppo_find_x8s_plus_A16
           - oppo_find_x9
-          - oppo_k12_b
-          - oppo_k13_turbo_v
-          - oppo_k13_turbo_pro_v
-          - oppo_k13_turbo_pro_b
-          - oppo_pad_2_v
-          - oppo_pad_3_v
-          - oppo_pad_3_b
-          - oppo_pad_3_pro_v
-          - oppo_pad_3_pro_b
+          - oppo_k12_A16
+          - oppo_k13_turbo_A15
+          - oppo_k13_turbo_pro_A15
+          - oppo_k13_turbo_pro_A16
+          - oppo_pad_2_A15
+          - oppo_pad_3_A15
+          - oppo_pad_3_A16
+          - oppo_pad_3_pro_A15
+          - oppo_pad_3_pro_A16
           - oppo_pad_4_pro
-          - oppo_pad_4_pro_b
-          - oppo_pad_5_mt6878_b
-          - oppo_pad_5_mt6991_b
-          - oppo_pad_air5_b
-          - oppo_pad_se_v
-          - oppo_reno_15_b
-          - oppo_reno8_pro_plus_v
-          - oppo_reno9_pro_v
-          - oppo_reno9_pro_plus_v
-          - oppo_reno10_pro_plus_v
-          - oppo_reno10_pro_plus_b
-          - oppo_reno11_v
-          - oppo_reno11_b
-          - oppo_reno11_pro_5g_v
-          - oppo_reno11_pro_5g_mt6896_v
-          - oppo_reno12_b
-          - oppo_reno12_5g_mt6878_v
-          - oppo_reno12_mt6896_v
-          - oppo_reno12_pro_5g_mt6878_v
-          - oppo_reno12_pro_mt6985_u
-          - oppo_reno12_pro_mt6985_v
-          - oppo_reno12_pro_mt6985_b
-          - oppo_reno13_v
-          - oppo_reno13_b
-          - oppo_reno13_pro_v
-          - oppo_reno13f_v
-          - oppo_reno13f_b
-          - oppo_reno14_v
-          - oppo_reno14_b
-          - oppo_reno14_pro_v
-          - oppo_reno14_pro_b
-          - realme_gt_neo3_t
-          - realme_gt_neo3_u
-          - realme_gt_neo5se_v
-          - realme_gt_neo6_v
-          - realme_gt_neo6_b
-          - realme_gt5_v
-          - realme_gt5_b
-          - realme_gt5pro_v
-          - realme_gt5pro_b
-          - realme_gt6_v
-          - realme_gt6_b
-          - realme_gt7_b
+          - oppo_pad_4_pro_A16
+          - oppo_pad_5_mt6878_A16
+          - oppo_pad_5_mt6991_A16
+          - oppo_pad_air5_A16
+          - oppo_pad_se_A15
+          - oppo_reno_15_A16
+          - oppo_reno8_pro_plus_A15
+          - oppo_reno9_pro_A15
+          - oppo_reno9_pro_plus_A15
+          - oppo_reno10_pro_plus_A15
+          - oppo_reno10_pro_plus_A16
+          - oppo_reno11_A15
+          - oppo_reno11_A16
+          - oppo_reno11_pro_5g_A15
+          - oppo_reno11_pro_5g_mt6896_A15
+          - oppo_reno12_A16
+          - oppo_reno12_5g_mt6878_A15
+          - oppo_reno12_mt6896_A15
+          - oppo_reno12_pro_5g_mt6878_A15
+          - oppo_reno12_pro_mt6985_A14
+          - oppo_reno12_pro_mt6985_A15
+          - oppo_reno12_pro_mt6985_A16
+          - oppo_reno13_A15
+          - oppo_reno13_A16
+          - oppo_reno13_pro_A15
+          - oppo_reno13f_A15
+          - oppo_reno13f_A16
+          - oppo_reno14_A15
+          - oppo_reno14_A16
+          - oppo_reno14_pro_A15
+          - oppo_reno14_pro_A16
+          - realme_gt_neo3_A13
+          - realme_gt_neo3_A14
+          - realme_gt_neo5se_A15
+          - realme_gt_neo6_A15
+          - realme_gt_neo6_A16
+          - realme_gt5_A15
+          - realme_gt5_A16
+          - realme_gt5pro_A15
+          - realme_gt5pro_A16
+          - realme_gt6_A15
+          - realme_gt6_A16
+          - realme_gt7_A16
           - realme_gt7_pro
-          - realme_gt7_pro_b
+          - realme_gt7_pro_A16
           - realme_neo_8
-          - realme_neo6_se_b
-          - realme_neo7_v
-          - realme_neo7_b
-          - realme_neo7_se_v
-          - JiuGeFaCai_oneplus_13_v
-          - JiuGeFaCai_oneplus_ace5_pro_v
+          - realme_neo6_se_A16
+          - realme_neo7_A15
+          - realme_neo7_A16
+          - realme_neo7_se_A15
+          - JiuGeFaCai_oneplus_13_A15
+          - JiuGeFaCai_oneplus_ace5_pro_A15
       SUSFS_CI:
         type: choice
         description: "SUSFS模块下载调用方向//SUSFS module branch"
@@ -369,6 +369,19 @@ jobs:
         run: |
           set -e
           cd "$GITHUB_WORKSPACE"
+          # 下拉框显示 _A12.._A17（安卓版本），还原为清单真实后缀 _s/_t/_u/_v/_b/_c
+          if [[ "$FILE" =~ ^(.+)_A(1[2-7])$ ]]; then
+            case "${BASH_REMATCH[2]}" in
+              12) FILE="${BASH_REMATCH[1]}_s" ;;
+              13) FILE="${BASH_REMATCH[1]}_t" ;;
+              14) FILE="${BASH_REMATCH[1]}_u" ;;
+              15) FILE="${BASH_REMATCH[1]}_v" ;;
+              16) FILE="${BASH_REMATCH[1]}_b" ;;
+              17) FILE="${BASH_REMATCH[1]}_c" ;;
+            esac
+            echo "下拉框选项还原: ${{ github.event.inputs.FILE }} -> $FILE"
+          fi
+          echo "FILE=$FILE" >> $GITHUB_ENV
           if [[ "$FILE" =~ ^(.+)_([a-zA-Z])$ ]]; then
             FILE_CONF="${BASH_REMATCH[1]}"
           else
@@ -602,7 +615,7 @@ jobs:
 
       - name: Initialize Repo and Sync
         env:
-          FILE: ${{ github.event.inputs.FILE }}
+          FILE: ${{ env.FILE }}
         run: |
           cd kernel_workspace
           mkdir -p .repo/manifests
@@ -840,7 +853,7 @@ jobs:
 
       - name: Apply Patches ReSukiSU
         env:
-          FILE: ${{ github.event.inputs.FILE }}
+          FILE: ${{ env.FILE }}
         run: |
           cd kernel_workspace
           if [ "${{ github.event.inputs.SUSFS_META }}" != "-1" ]; then
@@ -950,7 +963,7 @@ jobs:
 
       - name: Apply DROID_SPACES
         env:
-          FILE: ${{ github.event.inputs.FILE }}
+          FILE: ${{ env.FILE }}
         if: ${{ github.event.inputs.DROID_SPACES == 'true' }}
         run: |
           PATCH_DIR="${GITHUB_WORKSPACE}/kernel_workspace/Action-Build/patches"
@@ -1044,7 +1057,7 @@ jobs:
 
       - name: Apply SCHED_HMBIRD
         env:
-          FILE: ${{ github.event.inputs.FILE }}
+          FILE: ${{ env.FILE }}
         if: ${{ github.event.inputs.SCHED_HMBIRD == 'true' }}
         run: |
           cd kernel_workspace/kernel_platform/common
