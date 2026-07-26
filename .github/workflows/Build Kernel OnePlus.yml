@@ -5,7 +5,7 @@ on:
     inputs:
       FILE:
         type: choice
-        description: "配置文件 | 后缀=安卓版本: _s=12 _t=13 _u=14 _v=15 _b=16 _c=17 | 请选与手机当前安卓版本一致的，选错会导致无声/相机等驱动失效"
+        description: "配置文件｜排列: OnePlus(1-112) → OPPO(113-187) → realme(188-206)｜后缀=安卓版本 _s=12 _t=13 _u=14 _v=15 _b=16 _c=17｜同机型各版本相邻，务必选与手机当前安卓版本一致的，选错会无声/相机失效"
         required: true
         default: oneplus_ace2_pro_b
         options:
@@ -48,6 +48,16 @@ on:
           - oneplus_ace_t
           - oneplus_ace_u
           - oneplus_ace_v
+          - oneplus_ace_2v_v
+          - oneplus_ace_2v_b
+          - oneplus_ace_3v_v
+          - oneplus_ace_3v_b
+          - oneplus_ace_6
+          - oneplus_ace_6t
+          - oneplus_ace_6t_Canary
+          - oneplus_ace_pro_v
+          - oneplus_ace_race_u
+          - oneplus_ace_race_v
           - oneplus_ace2_v
           - oneplus_ace2_b
           - oneplus_ace2_pro_v
@@ -68,16 +78,6 @@ on:
           - oneplus_ace5_ultra_bak_b
           - oneplus_ace6_ultra
           - oneplus_ace6_ultra_Canary
-          - oneplus_ace_2v_v
-          - oneplus_ace_2v_b
-          - oneplus_ace_3v_v
-          - oneplus_ace_3v_b
-          - oneplus_ace_6
-          - oneplus_ace_6t
-          - oneplus_ace_6t_Canary
-          - oneplus_ace_pro_v
-          - oneplus_ace_race_u
-          - oneplus_ace_race_v
           - oneplus_n6_b
           - oneplus_nord_3_v
           - oneplus_nord_3_b
@@ -96,9 +96,6 @@ on:
           - oneplus_nord_n30_se_5g_v
           - oneplus_open_v
           - oneplus_open_b
-          - oneplus_pad2_v
-          - oneplus_pad2_b
-          - oneplus_pad2_mt6991_b
           - oneplus_pad_2_pro
           - oneplus_pad_2_pro_b
           - oneplus_pad_3
@@ -118,6 +115,9 @@ on:
           - oneplus_pad_pro
           - oneplus_pad_pro_v
           - oneplus_pad_pro_b
+          - oneplus_pad2_v
+          - oneplus_pad2_b
+          - oneplus_pad2_mt6991_b
           - oneplus_turbo_6
           - oneplus_turbo_6v
           - oneplus_turbo_6x_b
@@ -170,6 +170,10 @@ on:
           - oppo_pad_5_mt6991_b
           - oppo_pad_air5_b
           - oppo_pad_se_v
+          - oppo_reno_15_b
+          - oppo_reno8_pro_plus_v
+          - oppo_reno9_pro_v
+          - oppo_reno9_pro_plus_v
           - oppo_reno10_pro_plus_v
           - oppo_reno10_pro_plus_b
           - oppo_reno11_v
@@ -192,10 +196,11 @@ on:
           - oppo_reno14_b
           - oppo_reno14_pro_v
           - oppo_reno14_pro_b
-          - oppo_reno8_pro_plus_v
-          - oppo_reno9_pro_v
-          - oppo_reno9_pro_plus_v
-          - oppo_reno_15_b
+          - realme_gt_neo3_t
+          - realme_gt_neo3_u
+          - realme_gt_neo5se_v
+          - realme_gt_neo6_v
+          - realme_gt_neo6_b
           - realme_gt5_v
           - realme_gt5_b
           - realme_gt5pro_v
@@ -205,16 +210,11 @@ on:
           - realme_gt7_b
           - realme_gt7_pro
           - realme_gt7_pro_b
-          - realme_gt_neo3_t
-          - realme_gt_neo3_u
-          - realme_gt_neo5se_v
-          - realme_gt_neo6_v
-          - realme_gt_neo6_b
+          - realme_neo_8
           - realme_neo6_se_b
           - realme_neo7_v
           - realme_neo7_b
           - realme_neo7_se_v
-          - realme_neo_8
           - JiuGeFaCai_oneplus_13_v
           - JiuGeFaCai_oneplus_ace5_pro_v
       SUSFS_CI:
