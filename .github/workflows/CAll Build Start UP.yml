@@ -13,7 +13,7 @@ on:
         default: "请输入完整标题"
 
 permissions:
-  actions: read
+  actions: write
   contents: read
 
 jobs:
@@ -93,7 +93,6 @@ jobs:
             split("\n")[:-1] |
             map({
               file: .,
-              file_short: (sub("_A1[2-7]$"; "") | sub("_[a-z]$"; ""))
               enable_sched: (
                 . == "oneplus_pad_2_pro" or
                 . == "oneplus_13" or
@@ -119,177 +118,95 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Build All OnePlus Kernels
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           inputs: |
             {
               "FILE": "${{ matrix.file }}",
-              "SUSFS_CI": "NoN",
-              "KSU_META": "susfs-main/抖音王德发刷机/",
+              "BATCH_ID": "${{ github.run_id }}-${{ github.run_attempt }}",
+              "SUSFS_CI": "N/A",
+              "KSU_META": "main/main/王德发刷机/",
               "BUILD_TIME": "F",
               "SUFFIX": "",
               "FAST_BUILD": "true",
-              "HOOK": "manual",
-              "LSM": "true",
-              "SCHED": "${{ matrix.enable_sched }}",
-              "ZRAM": "false"
+              "LSM_BBG": "true",
+              "SCHED_HMBIRD": "${{ matrix.enable_sched }}",
+              "ZRAM": "0/lz4kd/8589934592"
             }
 
-      - name: Wait for Builds to Finish or Exit Early
+      - name: Wait for Current Build and Download AnyKernel3
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_TITLE: "${{ matrix.file }} · FAST [batch:${{ github.run_id }}-${{ github.run_attempt }}]"
         run: |
-          FILE="${{ matrix.file_short }}"
-          echo "等待目标构建 $FILE 上传对应 Artifact..."
-
+          # Locate this child run by batch ID and FILE, not a historical artifact name.
           SECONDS=0
           MAX_TIME=$((35 * 60))
-          sleep 600
-
+          RUN_ID=""
+          CONCLUSION=""
           while (( SECONDS < MAX_TIME )); do
-            echo "查询已上传的 Artifact（已等待 $SECONDS 秒）..."
-            ALL_ARTIFACTS=$(gh api --paginate repos/${{ github.repository }}/actions/artifacts --jq '.artifacts[].name')
-
-            if echo "$ALL_ARTIFACTS" | grep -E -q "$FILE"; then
-              echo "✅ 找到匹配的 Artifact：$(echo "$ALL_ARTIFACTS" | grep -E "$FILE" | head -n1)"
-              exit 0
+            if [ -z "$RUN_ID" ]; then
+              RUNS=$(gh api --method GET --paginate \
+                "repos/$GITHUB_REPOSITORY/actions/workflows/Build%20Kernel%20OnePlus.yml/runs" \
+                -f event=workflow_dispatch -f branch="$GITHUB_REF_NAME" -f per_page=100)
+              RUN_ID=$(printf '%s' "$RUNS" | jq -sr --arg title "$TARGET_TITLE" --arg sha "$GITHUB_SHA" \
+                '[.[].workflow_runs[] | select(.display_title == $title and .head_sha == $sha)] | max_by(.id) | .id // empty')
             fi
-
-            echo "未找到匹配的 Artifact，休眠5min继续..."
-            sleep 300
+            if [ -n "$RUN_ID" ]; then
+              RUN=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID")
+              if [ "$(printf '%s' "$RUN" | jq -r '.status')" = "completed" ]; then
+                CONCLUSION=$(printf '%s' "$RUN" | jq -r '.conclusion')
+                break
+              fi
+            fi
+            echo "等待本次子构建：$TARGET_TITLE ($SECONDS 秒)"
+            sleep 60
           done
+          if [ "$CONCLUSION" != "success" ]; then
+            echo "::error::子构建未成功：$TARGET_TITLE，run=$RUN_ID，结果=${CONCLUSION:-timeout}"
+            exit 1
+          fi
 
-          echo "❌ 超时未检测到 $FILE 的构建成功 Artifact。"
-          exit 1
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts?per_page=100" \
+            --jq '.artifacts[] | select(.expired == false and (.name | startswith("AnyKernel3_"))) | [.id, .name] | @tsv' > artifacts.tsv
+          if [ ! -s artifacts.tsv ]; then
+            echo "::error::成功的子构建 $RUN_ID 没有可下载的 AnyKernel3 产物"
+            exit 1
+          fi
+          mkdir -p all_artifacts
+          while IFS=$'\t' read -r ARTIFACT_ID NAME; do
+            curl -fL --retry 3 -H "Authorization: Bearer $GH_TOKEN" \
+              -o "all_artifacts/${NAME}_run${RUN_ID}.zip" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip"
+          done < artifacts.tsv
 
-      - name: Clean ccache After Build
-        run: |
-          echo "Cleaning ccache for $HOME/.ccache_${{ matrix.file }} ..."
-          rm -rf "$HOME/.ccache_${{ matrix.file }}"
+      - name: Stage Current Build ZIP
+        uses: actions/upload-artifact@v7
+        with:
+          name: batch-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.file }}
+          path: all_artifacts/*.zip
+          compression-level: 0
+          if-no-files-found: error
 
   wait-and-download:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
+      - name: Collect Current Batch ZIPs
+        uses: actions/download-artifact@v8
+        with:
+          pattern: batch-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: all_artifacts
+          merge-multiple: true
 
-      - name: Setup gh CLI
-        run: |
-          sudo apt update && sudo apt install -y gh zip curl jq
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - name: List Matching Artifacts for Current Batch
-        id: list-artifacts
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "查找当前 Batch 的 Artifacts..."
-          mkdir -p all_artifacts
-
-          BATCH="${{ github.event.inputs.BATCH }}"
-          if [[ "$BATCH" == "1" ]]; then
-            FILE_LIST=(
-              "oneplus_nord_ce4_lite_5g_A15"
-              "oneplus_nord_ce4_A15"
-              "oneplus_nord_4_A15"
-              "oneplus_ace_3v_A15"
-              "oneplus_10_pro_A15"
-              "oneplus_10t_A15"
-              "oneplus_11r_A15"
-              "oneplus_ace2_A15"
-              "oneplus_ace_pro_A15"
-            )
-          elif [[ "$BATCH" == "2" ]]; then
-            FILE_LIST=(
-              "oneplus_11_A15"
-              "oneplus_12r_A15"
-              "oneplus_ace2_pro_A15"
-              "oneplus_ace3_A15"
-              "oneplus_open_A15"
-              "oneplus_12_A15"
-              "oneplus_13r"
-              "oneplus_ace3_pro_A15"
-              "oneplus_ace5"
-            )
-          elif [[ "$BATCH" == "3" ]]; then
-            FILE_LIST=(
-              "oneplus_pad_pro_A15"
-              "oneplus_pad2_A15"
-              "oneplus_nord_5"
-              "oneplus_ace5_pro"
-              "oneplus_ace5_pro_A16"
-              "oneplus_13"
-              "oneplus_13_A16"
-              "oneplus_13t"
-              "oneplus_13t_A16"
-            )
-          elif [[ "$BATCH" == "4" ]]; then
-            FILE_LIST=(
-              "oneplus_13_global"
-              "oneplus_13s"
-              "oneplus_13s_A16"
-              "oneplus_pad_2_pro"
-              "oneplus_pad_3"
-              "oneplus_ace5_ultra"
-              "oneplus_ace_6"
-              "oneplus_15"
-            )
-          else
-            echo "无效的 BATCH 值: $BATCH"
-            exit 1
-          fi
-
-          SHORT_LIST=()
-          for FILE in "${FILE_LIST[@]}"; do
-            SHORT=$(echo "$FILE" | sed -E 's/_[a-z]$//' | sed -E 's/_v$//')
-            SHORT_LIST+=("$SHORT")
-          done
-
-          ALL_ARTIFACTS=$(gh api --paginate repos/${{ github.repository }}/actions/artifacts --jq '.artifacts[].name')
-
-          MATCHED_ARTIFACTS=()
-          for FILE in "${SHORT_LIST[@]}"; do
-            for ART in $ALL_ARTIFACTS; do
-              if [[ "$ART" == *"$FILE"* ]]; then
-                MATCHED_ARTIFACTS+=("$ART")
-              fi
-            done
-          done
-
-          if [[ "${#MATCHED_ARTIFACTS[@]}" -eq 0 ]]; then
-            echo "没有匹配的 Artifact，终止"
-            exit 1
-          fi
-
-          ARTIFACT_NAMES=$(IFS=";"; echo "${MATCHED_ARTIFACTS[*]}")
-          echo "ARTIFACT_NAMES=$ARTIFACT_NAMES" >> "$GITHUB_OUTPUT"
-
-      - name: Download All Matched Artifacts as ZIP
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          mkdir -p all_artifacts
-          IFS=';' read -ra NAMES <<< "${{ steps.list-artifacts.outputs.ARTIFACT_NAMES }}"
-          for NAME in "${NAMES[@]}"; do
-            echo "查找 artifact $NAME 的 ID..."
-            ARTIFACT_ID=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.name==\"$NAME\") | .id")
-            if [[ -n "$ARTIFACT_ID" ]]; then
-              echo "下载 $NAME (ID: $ARTIFACT_ID)..."
-              curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                   -o "all_artifacts/${NAME}.zip" \
-                   "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${ARTIFACT_ID}/zip"
-            else
-              echo "未找到 $NAME 的 ID，跳过"
-            fi
-          done
-
-      - name: Create Final ZIP from Extracted ZIPS
+      - name: Create Final ZIP
         run: |
           cd all_artifacts
-          zip -r ../All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}.zip ./*
+          zip -r ../All-AnyKernel3-ReSukiSU-${{ inputs.BATCH }}.zip ./*.zip
 
       - name: Upload Combined ZIP Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}
-          path: All-AnyKernel3-SukiSUUltra-${{ github.event.inputs.BATCH }}.zip
+          name: All-AnyKernel3-ReSukiSU-${{ inputs.BATCH }}
+          path: All-AnyKernel3-ReSukiSU-${{ inputs.BATCH }}.zip
+          if-no-files-found: error

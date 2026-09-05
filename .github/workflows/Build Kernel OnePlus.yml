@@ -1,8 +1,13 @@
 name: Build All OnePlus Kernels
-run-name: "${{ inputs.FILE }} · ${{ inputs.FAST_BUILD == 'true' && 'FAST' || 'STD' }}"
+run-name: "${{ inputs.FILE }} · ${{ inputs.FAST_BUILD && 'FAST' || 'STD' }}${{ inputs.BATCH_ID != '' && format(' [batch:{0}]', inputs.BATCH_ID) || '' }}"
 on:
   workflow_dispatch:
     inputs:
+      BATCH_ID:
+        description: "批次标识（单独构建请留空）"
+        type: string
+        required: false
+        default: ""
       FILE:
         type: choice
         description: "配置文件｜名字末尾 _A13/_A14/_A15/_A16 就是安卓版本，务必选和手机当前安卓版本一致的，选错会没声音/相机坏｜没带 _A 的表示该机型只有一个版本｜排列: OnePlus → OPPO → realme，同机型各安卓版本相邻"
@@ -64,7 +69,6 @@ on:
 
           - oneplus_15
           - oneplus_15_Canary
-          - oneplus_15r
           - oneplus_15r_Canary
           - oneplus_15t
           - oneplus_15t_Canary
@@ -75,8 +79,6 @@ on:
           - oneplus_ace_2v_A16
           - oneplus_ace_3v_A15
           - oneplus_ace_3v_A16
-          - oneplus_ace_6
-          - oneplus_ace_6t
           - oneplus_ace_6t_Canary
           - oneplus_ace_pro_A15
           - oneplus_ace_race_A14
@@ -108,7 +110,6 @@ on:
           - oneplus_nord_4_A16
           - oneplus_nord_5
           - oneplus_nord_5_A16
-          - oneplus_nord_6
           - oneplus_nord_ce4_A15
           - oneplus_nord_ce4_A16
           - oneplus_nord_ce4_lite_5g_A15
@@ -141,8 +142,6 @@ on:
           - oneplus_pad2_A15
           - oneplus_pad2_A16
           - oneplus_pad2_mt6991_A16
-          - oneplus_turbo_6
-          - oneplus_turbo_6v
           - oneplus_turbo_6x_A16
           - oppo_a5_pro_5g_A15
           - oppo_f29_pro_5g_A15
@@ -240,6 +239,21 @@ on:
           - realme_neo7_se_A15
           - JiuGeFaCai_oneplus_13_A15
           - JiuGeFaCai_oneplus_ace5_pro_A15
+          # 保留批量清单仍使用的原机型/安卓版本，避免升级到其他系统版本。
+          - oneplus_10_pro_A15
+          - oneplus_10t_A15
+          - oneplus_11r_A15
+          - oneplus_11_A15
+          - oneplus_12r_A15
+          - oneplus_12_A15
+          - oneplus_13r
+          - oneplus_13
+          - oneplus_13_A16
+          - oneplus_13t
+          - oneplus_13t_A16
+          - oneplus_13_global
+          - oneplus_13s
+          - oneplus_13s_A16
       SUSFS_CI:
         type: choice
         description: "SUSFS模块下载调用方向//SUSFS module branch"
